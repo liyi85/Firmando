@@ -26,7 +26,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-
 /**
  * Created by andrearodriguez on 11/9/15.
  */
@@ -44,9 +43,13 @@ public class CaptureSignature extends Activity {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         setContentView(R.layout.capturesignature);
+
+//        Declaro boton salvar en estado deshabilitado.
         btn_save = (Button) findViewById(R.id.btn_save);
         btn_save.setEnabled(false);
         btn_clear = (Button) findViewById(R.id.btn_clear);
+
+//        Declaro Layaut donde se va a gurdar la firma
         liLa_mContent = (LinearLayout) findViewById(R.id.mysignature);
 
         mSignature = new signature(this, null);
@@ -57,6 +60,7 @@ public class CaptureSignature extends Activity {
         btn_clear.setOnClickListener(onButtonClick);
     }
 
+//    Llamo las acciones de borrar y guardar
     Button.OnClickListener onButtonClick = new Button.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -69,7 +73,12 @@ public class CaptureSignature extends Activity {
         }
     };
 
+
+//    Clase que da el grosor y el color a la firma
     public class signature extends View {
+
+//    Grosor de la linea de la firma es 4f
+
         static final float STROKE_WIDTH = 4f;
         static final float HALF_STROKE_WIDTH = STROKE_WIDTH / 2;
         Paint paint = new Paint();
@@ -79,7 +88,9 @@ public class CaptureSignature extends Activity {
         float lastTouchY;
         final RectF dirtyRect = new RectF();
 
-        public signature(Context context, AttributeSet attrs) {
+
+//    Atributos de la firma, y caracteristicas del pincel
+            public signature(Context context, AttributeSet attrs) {
             super(context, attrs);
             paint.setAntiAlias(true);
             paint.setColor(Color.BLACK);
@@ -88,15 +99,19 @@ public class CaptureSignature extends Activity {
             paint.setStrokeWidth(STROKE_WIDTH);
         }
 
+//    Borro lo que este en el path y deshabilito el boton salvar
         public void clear() {
             path.reset();
             invalidate();
             btn_save.setEnabled(false);
         }
-
+//      Salvo la forma
         public void save() {
+//            Paso lo que esta en el Linealayaout a un bitmao
             Bitmap returnedBitmap = Bitmap.createBitmap(liLa_mContent.getWidth(),
                     liLa_mContent.getHeight(), Bitmap.Config.ARGB_8888);
+
+//            Gurado lo que esta en el lineallayout en un archivo canvas
             Canvas canvas = new Canvas(returnedBitmap);
             Drawable bgDrawable = liLa_mContent.getBackground();
 
@@ -106,26 +121,39 @@ public class CaptureSignature extends Activity {
             else {
 
 //                FileOutputStream bitMapReSize = openFileOutput("Firmas1.png", Context.MODE_PRIVATE);
+//                Para salvar en un lugar donde el cliente no tenga acceso
+
+//                Se almacena el bitmap en una variable outputstream
                 OutputStream bitMapReSize;
+
+//                Se crea la ruta para gurdar el archivo
                 File filepath= Environment.getExternalStorageDirectory();
+//                Crea carpeta Save Firmas en el celular
                 File dir = new File (filepath.getAbsolutePath() + "/Save Firmas");
                 dir.mkdirs();
 
+//                Se da un nombre al archivo que se va a gurdar
                 File file = new File (dir, "Firma10.jpeg");
+//                Mensaje de que se gusro don exito la firma
                 Toast.makeText(CaptureSignature.this, "Firma Salvada en SD", Toast.LENGTH_SHORT).show();
                 try {
-
+//                  Se gurda el archico en la ruta determinada arriba
                     bitMapReSize = new FileOutputStream(file);
+//                    Se da un color de fondo a la imagen de la firma
                     canvas.drawColor(Color.rgb(216,222,222));
+//                    Se dibuja lo que esta en el canvas
                     liLa_mContent.draw(canvas);
-
+//                  Se almacena en un bitearray el bitmap
                     ByteArrayOutputStream bitMostrar = new ByteArrayOutputStream();
+//                    Se comprime la imagen y se disminuye al maximo la calidad para que el archvivo qued epequeño
                     returnedBitmap.compress(Bitmap.CompressFormat.JPEG, 1, bitMapReSize);
                     returnedBitmap.compress(Bitmap.CompressFormat.JPEG, 2, bitMostrar);
+//                    Se muestra la firma gurdada
                 Intent intent = new Intent();
                 intent.putExtra("byteArray", bitMostrar.toByteArray());
                 setResult(1, intent);
                 finish();
+//                    Se termina el proceso de gurdado y visualizacion
                     bitMapReSize.flush();
                     bitMapReSize.close();
                 } catch (Exception e) {
@@ -137,9 +165,10 @@ public class CaptureSignature extends Activity {
         @Override
         protected void onDraw(Canvas canvas) {
             // TODO Auto-generated method stub
+//            Dibuja la firma
             canvas.drawPath(path, paint);
         }
-
+//La clase que gurda los movimientos de la firma
         @Override
         public boolean onTouchEvent(MotionEvent event) {
             float eventX = event.getX();

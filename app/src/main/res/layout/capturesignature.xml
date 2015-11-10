@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -9,27 +9,42 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:id="@+id/linearLayout">
 
-        <Button
-            android:id="@+id/btn_clear"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Clear" />
-
-        <Button
-            android:id="@+id/btn_save"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="save" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/mysignature"
         android:layout_width="fill_parent"
         android:layout_height="200dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
     </LinearLayout>
 
+    <Button
+        android:id="@+id/btn_clear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Clear"
+        android:layout_below="@+id/mysignature"
+        android:layout_toRightOf="@+id/linearLayout"
+        android:layout_toEndOf="@+id/linearLayout"
+        android:layout_marginLeft="60dp"
+        android:layout_marginStart="60dp" />
 
-</LinearLayout>
+    <Button
+        android:id="@+id/btn_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="save"
+        android:layout_below="@+id/mysignature"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="66dp"
+        android:layout_marginEnd="66dp" />
+
+
+</RelativeLayout>

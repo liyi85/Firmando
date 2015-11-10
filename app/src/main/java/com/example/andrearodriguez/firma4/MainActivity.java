@@ -12,7 +12,7 @@ import android.widget.ImageView;
 
 public class MainActivity extends Activity {
 
-    Button b1;
+    Button btn_getSignature;
     ImageView signImage;
 
     @Override
@@ -20,10 +20,11 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        b1 = (Button) findViewById(R.id.btn_getSign);
+//        Declaro variables
+        btn_getSignature = (Button) findViewById(R.id.btn_getSign);
         signImage = (ImageView) findViewById(R.id.iv_showSign);
 
-        b1.setOnClickListener(onButtonClick);
+        btn_getSignature.setOnClickListener(onButtonClick);
 
     }
 
@@ -32,12 +33,15 @@ public class MainActivity extends Activity {
         @Override
         public void onClick(View v) {
             // TODO Auto-generated method stub
+//            Llamada a la clase de capturar la firma
             Intent i = new Intent(MainActivity.this, CaptureSignature.class);
             startActivityForResult(i, 0);
 
 
         }
     };
+
+//    Imprimo la imagen
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // TODO Auto-generated method stub
